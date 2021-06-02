@@ -7,5 +7,5 @@ abstract class Program(name: String) extends Subcommand(name) {
 
   def config: Config
 
-  def run(config: Config): Unit
+  def run(config: Config): Int
 }

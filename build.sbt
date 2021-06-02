@@ -1,6 +1,6 @@
 
 
-val scala3Version = "3.0.0"
+val scala3Version = "2.13.6"
 
 
 val appVersion = "0.0.1"
@@ -36,6 +36,7 @@ lazy val cli = project
     name := "cli",
     version := appVersion,
     scalaVersion := scala3Version,
+    fork := true
   )
   .dependsOn(mongoimport)
 
@@ -48,9 +49,14 @@ lazy val mongoimport = project
     version := appVersion,
     scalaVersion := scala3Version,
     libraryDependencies ++= Seq(
-      Deps.akkaJsonStream, Deps.akkaFile, Deps.reactivemongo
-    )
-    .map(_.cross(CrossVersion.for3Use2_13)),
+      Deps.scala2.akkaJsonStream,
+      Deps.scala2.akkaFile,
+      Deps.scala2.reactivemongo,
+      Deps.scala2.circeBson,
+
+      Deps.circeParser,
+      Deps.scala2.reactivemongoBson,
+    ),
 
   )
   .dependsOn(core)
