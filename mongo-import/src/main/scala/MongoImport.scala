@@ -123,7 +123,7 @@ object MongoImport extends Program("mongo-import") {
   def load(config: Config, bsonSrc: Source[BSONDocument, _]) = {
     val driver = new reactivemongo.api.AsyncDriver
     val futureCollection = driver
-      .connect(s"mongodb://${config.host}:${config.port}/?readPreference=primary&ssl=false")
+      .connect(s"mongodb://${config.username}:${config.password}@${config.host}:${config.port}/?readPreference=primary&ssl=false&authSource=${config.db}")
       .flatMap(_.database(config.db))
       .map(_.collection(config.collection))
     futureCollection
