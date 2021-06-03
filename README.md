@@ -1,8 +1,36 @@
-## sbt project compiled with Scala 3
+# Some utility for Data Engineer
 
-### Usage
+## Usage
 
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
+### Mongo Import
 
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+Import multiple json or json.gz files with Json Path to extract which data to be imported
+
+Commands
+
+```bash
+mongo-import
+-c, --collection  <arg>
+-d, --db  <arg>
+    --dir  <arg>
+    --drop
+-g, --gunzip
+-h, --host  <arg>
+-j, --json-path  <arg>
+    --password  <arg>
+-p, --port  <arg>
+-u, --username  <arg>
+```
+
+Example
+
+```cli
+mongo-import --db test \
+--collection testCollection \
+--drop \
+--username test \
+--password test \
+--dir /Users/huy_nq/Projects/kyotsu/ad-platform-client/media-data/smartnews/campaign/2020/12/\
+--gunzip \
+--json-path $.data
+```
