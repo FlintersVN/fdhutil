@@ -55,29 +55,36 @@ object MongoImport extends Program("mongo-import") {
   type Config = Opt
 
 
-  val db = opt[String](required = true)
-  val host = opt[String]()
-  val port = opt[Int]()
-  val collection = opt[String](required = true)
-  val username = opt[String](required = true)
-  val password = opt[String](required = true)
-  val drop = opt[Boolean]()
-  val gunzip = opt[Boolean]()
-  val jsonPath = opt[String]("json-path")
-  val dir = opt[String](required = true).map(str => Paths.get(str))
+  val db = opt[String](required = true, descr = "database name, required")
+  val host = opt[String](default = Some("localhost"), descr = "database host, default: localhost")
+  val port = opt[Int](default = Some(27017), descr = "database host, default: 27017")
+  val collection = opt[String](required = true, descr = "collection to be imported, required")
+  val username = opt[String](required = true, descr = "database username to be imported, required")
+  val password = opt[String](required = true, descr = "database password to be imported, required")
+  val drop = opt[Boolean](default = Some(false),descr = "drop collection if exist, default: false")
+  val gunzip = opt[Boolean](default = Some(false), descr = "gunzip files in directory, if enable only json.gz file will be processed, default: false")
+  val jsonPath = opt[String]("json-path", default = Some("$"), descr = "json path to extract, default: $")
+  val dir = opt[String](
+    required = true,
+    descr = "Absolute path, required"
+  ).map(str => Paths.get(str))
+
+  addValidation {
+    Either.cond(dir().isAbsolute(), (), "<dir> must be absolute")
+  }
 
 
   def config: Config = Opt(
     db = db(),
-    host = host.getOrElse("localhost"),
-    port = port.getOrElse(27017),
+    host = host(),
+    port = port(),
     collection = collection(),
-    drop = drop.getOrElse(false),
+    drop = drop(),
     directory = dir(),
     username = username(),
     password = password(),
-    gunzip = gunzip.getOrElse(false),
-    jsonPath = jsonPath.getOrElse("$")
+    gunzip = gunzip(),
+    jsonPath = jsonPath()
   )
 
   implicit lazy val actorSystem: ActorSystem = ActorSystem()
