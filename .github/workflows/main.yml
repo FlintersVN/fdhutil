@@ -17,10 +17,12 @@ jobs:
         uses: coursier/cache-action@v5
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+        run: |
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - name: Update version on build.sbt
         run: |
-          sed -i "s/0.0.1/$SOURCE_TAG/g" build.sbt
+          sed -i "s/0.0.1/$VERSION/g" build.sbt
       - name: Build project
         run: sbt clean packArchive
       - name: Create Release
@@ -29,8 +31,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ SOURCE_TAG }}
-          release_name: Release ${{ SOURCE_TAG }}
+          tag_name: ${{ env.SOURCE_TAG }}
+          release_name: Release ${{ env.SOURCE_TAG }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -40,6 +42,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: .cli/target/cli-${{ SOURCE_TAG }}.zip
-          asset_name: cli-${{ SOURCE_TAG }}.zip
+          asset_path: .cli/target/cli-${{ VERSION }}.zip
+          asset_name: cli-${{ VERSION }}.zip
           asset_content_type: application/zip
