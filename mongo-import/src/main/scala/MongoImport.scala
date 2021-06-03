@@ -98,6 +98,7 @@ object MongoImport extends Program("mongo-import") {
 
     Directory.walk(config.directory)
       .filter(_.toString.endsWith(fileExt))
+      .wireTap(p => logger.info(s"processing ${p}"))
       .flatMapMerge(32, { p =>
         FileIO.fromPath(p)
         .via(flow)
@@ -143,16 +144,17 @@ object MongoImport extends Program("mongo-import") {
           .runWith(
             Sink.foreach { result =>
               logger.info(
-                s"""ok = ${result.ok},
-                n = ${result.n},
-                nModified = ${result.nModified},
-                upserted = ${result.upserted},
-                writeErrors = ${result.writeErrors},
-                writeConcernError = ${result.writeConcernError},
-                code = ${result.code},
-                errmsg = ${result.errmsg},
-                totalN = ${result.totalN}
-                """
+                s"""
+                | ok = ${result.ok},
+                | n = ${result.n},
+                | nModified = ${result.nModified},
+                | upserted = ${result.upserted},
+                | writeErrors = ${result.writeErrors},
+                | writeConcernError = ${result.writeConcernError},
+                | code = ${result.code},
+                | errmsg = ${result.errmsg},
+                | totalN = ${result.totalN}
+                """.stripMargin
               )
             }
           )
