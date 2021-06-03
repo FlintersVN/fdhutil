@@ -17,4 +17,5 @@ object Deps {
 
 
   val logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
+  val airframeLog = "org.wvlet.airframe" %% "airframe-log" % "21.5.4"
 }

@@ -7,6 +7,10 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.Failure
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 
 import reactivemongo.api.{ AsyncDriver, MongoConnection }
 
@@ -25,14 +29,8 @@ import reactivemongo.api.bson._
 import reactivemongo.api.bson.collection._
 import reactivemongo.api.{ AsyncDriver, MongoConnection }
 
+
 import io.myutilities.program.Program
-import scala.util.Failure
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
-
-
-
-
 
 
 final case class Opt(
@@ -88,7 +86,7 @@ object MongoImport extends Program("mongo-import") {
   )
 
   implicit lazy val actorSystem: ActorSystem = ActorSystem()
-  lazy val logger = actorSystem.log
+  // lazy val logger = actorSystem.log
 
 
   def extract(config: Config) = {
@@ -98,7 +96,7 @@ object MongoImport extends Program("mongo-import") {
 
     Directory.walk(config.directory)
       .filter(_.toString.endsWith(fileExt))
-      .wireTap(p => logger.info(s"processing ${p}"))
+      .wireTap(p => debug(s"processing ${p}"))
       .flatMapMerge(32, { p =>
         FileIO.fromPath(p)
         .via(flow)
@@ -108,7 +106,7 @@ object MongoImport extends Program("mongo-import") {
           either
             .swap
             .foreach(
-              failure => logger.error(failure.underlying, s"${p} parse error: ${failure.message}")
+              failure => error(s"${p} parse error: ${failure.message}", failure.underlying)
             )
         }
         .collect {
@@ -119,7 +117,7 @@ object MongoImport extends Program("mongo-import") {
           either
             .swap
             .foreach(
-              failure => logger.error(failure, s"${p} convert JSON to BSON error:")
+              failure => error(s"${p} convert JSON to BSON error:", failure)
             )
         }
         .collect {
@@ -143,7 +141,7 @@ object MongoImport extends Program("mongo-import") {
           }
           .runWith(
             Sink.foreach { result =>
-              logger.info(
+              info(
                 s"""
                 | ok = ${result.ok},
                 | n = ${result.n},
@@ -164,12 +162,12 @@ object MongoImport extends Program("mongo-import") {
 
 
   def run(config: Config) = {
-    println(s"running with config ${config}")
+    info(s"running with config ${config}")
 
 
     val resultF = load(config, extract(config))
       .recover { throwable =>
-        logger.error(throwable, "Error occurred")
+        error("Error occurred", throwable)
         1
       }
       .map(_ => 0)

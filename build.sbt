@@ -12,9 +12,7 @@ lazy val common = project
     name := "common",
     version := appVersion,
 
-    scalaVersion := scalaV,
-
-    libraryDependencies ++= Seq(Deps.scallop, Deps.logback)
+    scalaVersion := scalaV
   )
 
 lazy val core = project
@@ -24,8 +22,9 @@ lazy val core = project
     version := appVersion,
 
     scalaVersion := scalaV,
-    libraryDependencies += Deps.scallop
+    libraryDependencies ++= Seq(Deps.scallop, Deps.airframeLog)
   )
+  .dependsOn(common)
 
 
 
@@ -56,9 +55,9 @@ lazy val mongoimport = project
       Deps.circeBson,
 
       Deps.circeParser,
-      Deps.reactivemongoBson
+      Deps.reactivemongoBson,
+      Deps.logback
     ),
 
   )
   .dependsOn(core)
-  .dependsOn(common)
