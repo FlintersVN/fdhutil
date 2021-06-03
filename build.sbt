@@ -2,17 +2,15 @@
 
 val scalaV = "2.13.6"
 
-val appVersion = "0.0.1"
 
 
 lazy val common = project
   .in(file("common"))
   .settings(
     name := "common",
-    version := appVersion,
 
     scalaVersion := scalaV
-  )
+  ).enablePlugins(GitVersioning)
 
 lazy val core = project
   .in(file("core"))
@@ -24,6 +22,7 @@ lazy val core = project
     libraryDependencies ++= Seq(Deps.scallop, Deps.airframeLog)
   )
   .dependsOn(common)
+  .enablePlugins(GitVersioning)
 
 
 
@@ -39,6 +38,7 @@ lazy val cli = project
   )
   .dependsOn(mongoimport)
   .enablePlugins(PackPlugin)
+  .enablePlugins(GitVersioning)
 
 
 
@@ -61,3 +61,4 @@ lazy val mongoimport = project
 
   )
   .dependsOn(core)
+  .enablePlugins(GitVersioning)
