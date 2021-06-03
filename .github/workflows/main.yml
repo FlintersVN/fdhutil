@@ -24,6 +24,8 @@ jobs:
         run: |
           echo $VERSION
           sed -i "s/0.0.1/$VERSION/g" build.sbt
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
       - name: Build project
         run: sbt clean packArchive
       - name: Create Release
@@ -31,6 +33,7 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_TAG: ${{ steps.get_version.outputs.SOURCE_TAG }}
         with:
           tag_name: ${{ env.SOURCE_TAG }}
           release_name: Release ${{ env.SOURCE_TAG }}
@@ -41,6 +44,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: .cli/target/cli-${{ env.VERSION }}.zip
