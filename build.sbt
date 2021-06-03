@@ -1,6 +1,6 @@
 
 
-val scala3Version = "2.13.6"
+val scalaV = "2.13.6"
 
 
 val appVersion = "0.0.1"
@@ -12,7 +12,7 @@ lazy val common = project
     name := "common",
     version := appVersion,
 
-    scalaVersion := scala3Version,
+    scalaVersion := scalaV,
 
     libraryDependencies ++= Seq(Deps.scallop, Deps.logback)
   )
@@ -23,7 +23,7 @@ lazy val core = project
     name := "core",
     version := appVersion,
 
-    scalaVersion := scala3Version,
+    scalaVersion := scalaV,
     libraryDependencies += Deps.scallop
   )
 
@@ -35,10 +35,11 @@ lazy val cli = project
   .settings(
     name := "cli",
     version := appVersion,
-    scalaVersion := scala3Version,
+    scalaVersion := scalaV,
     fork := true
   )
   .dependsOn(mongoimport)
+  .enablePlugins(PackPlugin)
 
 
 
@@ -47,7 +48,7 @@ lazy val mongoimport = project
   .settings(
     name := "mongo-import",
     version := appVersion,
-    scalaVersion := scala3Version,
+    scalaVersion := scalaV,
     libraryDependencies ++= Seq(
       Deps.akkaJsonStream,
       Deps.akkaFile,
