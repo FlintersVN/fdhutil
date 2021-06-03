@@ -32,7 +32,7 @@ mongo-import --db test \
 --drop \
 --username test \
 --password test \
---dir /Users/huy_nq/Projects/kyotsu/ad-platform-client/media-data/smartnews/campaign/2020/12/\
+--dir /Users/huy_nq/Projects/kyotsu/ad-platform-client/media-data/smartnews/campaign/2020/12/ \
 --gunzip \
 --json-path $.data
 ```
