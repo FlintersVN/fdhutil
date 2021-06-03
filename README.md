@@ -4,7 +4,7 @@
 
 ### Mongo Import
 
-Import multiple json or json.gz files with Json Path to extract which data to be imported
+Import multiple json or json.gz files with [Json Path](<https://github.com/jsurfer/JsonSurfer#what-is-jsonpath>) to extract which data to be imported
 
 Commands
 
