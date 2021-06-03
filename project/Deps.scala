@@ -16,5 +16,5 @@ object Deps {
   val circeParser = "io.circe" %% "circe-parser" % "0.14.1"
 
 
-  val logback = "ch.qos.logback" % "logback-classic" % "1.2.3" % Runtime
+  val logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
 }

@@ -56,7 +56,7 @@ lazy val mongoimport = project
       Deps.circeBson,
 
       Deps.circeParser,
-      Deps.reactivemongoBson,
+      Deps.reactivemongoBson
     ),
 
   )
