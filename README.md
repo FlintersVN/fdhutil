@@ -1,6 +1,7 @@
 # Some utilities for Data Engineer
 
 ## Installation
+Prerequisite java 8+
 ```cli
 $ curl -sL https://github.com/FlintersVN/fdhutil/releases/download/v0.0.1/cli-0.0.1.zip -o cli.zip
 $ unzip cli.zip
