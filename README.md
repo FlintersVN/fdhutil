@@ -30,7 +30,7 @@ le will be processed, default: false
 Example
 
 ```cli
-mongo-import --db test \
+fdhutil mongo-import --db test \
 --collection testCollection \
 --drop \
 --username test \
