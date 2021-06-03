@@ -10,16 +10,18 @@ Commands
 
 ```bash
 mongo-import
--c, --collection  <arg>
--d, --db  <arg>
-    --dir  <arg>
-    --drop
--g, --gunzip
--h, --host  <arg>
--j, --json-path  <arg>
-    --password  <arg>
--p, --port  <arg>
--u, --username  <arg>
+-c, --collection  <arg>   collection to be imported, required
+-d, --db  <arg>           database name, required
+    --dir  <arg>          Absolute path, required
+    --drop                drop collection if exist, default: false
+-g, --gunzip              gunzip files in directory, if enable only json.gz
+                          file will be processed, default: false
+-h, --host  <arg>         database host, default: localhost
+-j, --json-path  <arg>    json path to extract, default: $
+    --password  <arg>     database password to be imported, required
+-p, --port  <arg>         database host, default: 27017
+-u, --username  <arg>     database username to be imported, required
+    --help                Show help message
 ```
 
 Example
