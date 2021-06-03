@@ -20,12 +20,6 @@ jobs:
         run: |
           echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
           echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
-      - name: Update version on build.sbt
-        run: |
-          echo $VERSION
-          sed -i "s/0.0.1/$VERSION/g" build.sbt
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
       - name: Build project
         run: sbt clean packArchive
       - name: Create Release
