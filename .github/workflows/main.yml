@@ -1,0 +1,52 @@
+name: Scala CI
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - uses: olafurpg/setup-scala@v10
+      - name: Coursier cache
+        uses: coursier/cache-action@v5
+      - name: Get the version
+        id: get_version
+        run: |
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+      - name: Update version on build.sbt
+        run: |
+          echo $VERSION
+          sed -i "s/0.0.1/$VERSION/g" build.sbt
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
+      - name: Build project
+        run: sbt clean packArchive
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_TAG: ${{ steps.get_version.outputs.SOURCE_TAG }}
+        with:
+          tag_name: ${{ env.SOURCE_TAG }}
+          release_name: Release ${{ env.SOURCE_TAG }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./cli/target/cli-${{ env.VERSION }}.zip
+          asset_name: cli-${{ env.VERSION }}.zip
+          asset_content_type: application/zip

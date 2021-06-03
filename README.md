@@ -1,7 +1,12 @@
 # Some utilities for Data Engineer
 
 ## Installation
-TODO
+```cli
+$ curl -sL https://github.com/FlintersVN/fdhutil/releases/download/v0.0.1/cli-0.0.1.zip -o cli.zip
+$ unzip cli.zip
+$ mv cli-0.0.1 cli
+$ ./cli/bin/fdhutil --help
+```
 ## Usage
 
 ### Mongo Import
@@ -11,7 +16,7 @@ Import multiple json or json.gz files with [Json Path](<https://github.com/jsurf
 Commands
 
 ```cli
-fdhutil mongo-import
+$ ./cli/bin/fdhutil mongo-import
 -c, --collection  <arg>   collection to be imported, required
 
 -d, --db  <arg>           database name, required
@@ -32,7 +37,7 @@ fdhutil mongo-import
 Example
 
 ```cli
-fdhutil mongo-import --db test \
+$ ./cli/bin/fdhutil mongo-import --db test \
 --collection testCollection \
 --drop \
 --username test \

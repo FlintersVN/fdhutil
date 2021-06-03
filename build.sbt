@@ -2,7 +2,6 @@
 
 val scalaV = "2.13.6"
 
-
 val appVersion = "0.0.1"
 
 
@@ -34,6 +33,7 @@ lazy val cli = project
   .settings(
     name := "cli",
     version := appVersion,
+    packMain := Map("fdhutil" -> "io.myutilities.cli.Main"),
     scalaVersion := scalaV,
     fork := true
   )
