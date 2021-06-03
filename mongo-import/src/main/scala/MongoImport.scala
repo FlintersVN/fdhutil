@@ -67,8 +67,8 @@ object MongoImport extends Program("mongo-import") {
     descr = "Absolute path, required"
   ).map(str => Paths.get(str))
 
-  addValidation {
-    Either.cond(dir().isAbsolute(), (), "<dir> must be absolute")
+  validate(dir) { d =>
+    Either.cond(d.isAbsolute(), (), "<dir> must be absolute")
   }
 
 
