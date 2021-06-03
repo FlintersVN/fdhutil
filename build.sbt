@@ -14,7 +14,7 @@ lazy val common = project
 
     scalaVersion := scala3Version,
 
-    libraryDependencies += Deps.scallop
+    libraryDependencies ++= Seq(Deps.scallop, Deps.logback)
   )
 
 lazy val core = project
@@ -49,13 +49,13 @@ lazy val mongoimport = project
     version := appVersion,
     scalaVersion := scala3Version,
     libraryDependencies ++= Seq(
-      Deps.scala2.akkaJsonStream,
-      Deps.scala2.akkaFile,
-      Deps.scala2.reactivemongo,
-      Deps.scala2.circeBson,
+      Deps.akkaJsonStream,
+      Deps.akkaFile,
+      Deps.reactivemongo,
+      Deps.circeBson,
 
       Deps.circeParser,
-      Deps.scala2.reactivemongoBson,
+      Deps.reactivemongoBson,
     ),
 
   )

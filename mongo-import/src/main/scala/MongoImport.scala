@@ -135,9 +135,8 @@ object MongoImport extends Program("mongo-import") {
           }
           .runWith(
             Sink.foreach { result =>
-              println(
-                s"""
-                ok = ${result.ok},
+              logger.info(
+                s"""ok = ${result.ok},
                 n = ${result.n},
                 nModified = ${result.nModified},
                 upserted = ${result.upserted},
