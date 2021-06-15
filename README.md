@@ -1,20 +1,23 @@
 # Some utilities for Data Engineer
 
 ## Installation
+
 Prerequisite java 8+
+
 ```cli
 $ curl -sL https://github.com/FlintersVN/fdhutil/releases/download/v0.0.1/cli-0.0.1.zip -o cli.zip
 $ unzip cli.zip
 $ mv cli-0.0.1 cli
 $ ./cli/bin/fdhutil --help
 ```
+
 ## Usage
 
 For windows user use fdhutil.bat instead
 
 ### Mongo Import
 
-Import multiple json or json.gz files with [Json Path](<https://github.com/jsurfer/JsonSurfer#what-is-jsonpath>) to extract which data to be imported
+Import multiple json or json.gz files in streaming manner with [Json Path](<https://github.com/jsurfer/JsonSurfer#what-is-jsonpath>) to extract which data to be imported
 
 Commands
 
@@ -34,7 +37,7 @@ $ ./cli/bin/fdhutil mongo-import
 -p, --port  <arg>         database host, default: 27017
 -u, --username  <arg>     database username to be imported, required
 -v, --verbose             verbose logging, default: false
---help                Show help message
+    --help                Show help message
 ```
 
 Example
