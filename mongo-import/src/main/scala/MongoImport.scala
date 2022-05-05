@@ -53,15 +53,15 @@ object MongoImport extends Program("mongo-import") {
   type Config = Opt
 
 
-  val db = opt[String](required = true, descr = "database name, required")
-  val host = opt[String](default = Some("localhost"), descr = "database host, default: localhost")
-  val port = opt[Int](default = Some(27017), descr = "database host, default: 27017")
-  val collection = opt[String](required = true, descr = "collection to be imported, required")
-  val username = opt[String](required = true, descr = "database username to be imported, required")
-  val password = opt[String](required = true, descr = "database password to be imported, required")
-  val drop = opt[Boolean](default = Some(false),descr = "drop collection if exist, default: false")
-  val gunzip = opt[Boolean](default = Some(false), descr = "gunzip files in directory, if enable only json.gz file will be processed, default: false")
-  val jsonPath = opt[String]("json-path", default = Some("$"), descr = "json path to extract, default: $")
+  val db = opt[String](required = true, descr = "database to use, required")
+  val host = opt[String](default = Some("localhost"), descr = "mongodb host to connect to, default: localhost")
+  val port = opt[Int](default = Some(27017), descr = "server port, default: 27017")
+  val collection = opt[String](required = true, descr = "collection to use, required")
+  val username = opt[String](required = true, descr = "username for authentication, required")
+  val password = opt[String](required = true, descr = "password for authentication, required")
+  val drop = opt[Boolean](default = Some(false),descr = "drop collection before inserting documents, default: false")
+  val gunzip = opt[Boolean](default = Some(false), descr = "only json.gz file is processed, default: false")
+  val jsonPath = opt[String]("json-path", default = Some("$"), descr = "json path to data to be imported, default: $")
   val dir = opt[String](
     required = true,
     descr = "Absolute path, required"

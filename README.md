@@ -5,39 +5,36 @@
 Prerequisite java 8+
 
 ```cli
-$ curl -sL https://github.com/FlintersVN/fdhutil/releases/download/v0.0.1/cli-0.0.1.zip -o cli.zip
-$ unzip cli.zip
-$ mv cli-0.0.1 cli
-$ ./cli/bin/fdhutil --help
+$> curl -sL https://github.com/FlintersVN/fdhutil/releases/download/v0.0.1/cli-0.0.1.zip -o cli.zip
+$> unzip cli.zip
+$> mv cli-0.0.1 cli
+$> ./cli/bin/fdhutil --help
 ```
 
 ## Usage
 
-For windows user use fdhutil.bat instead
+For windows users, use fdhutil.bat instead
 
 ### Mongo Import
 
-Import multiple json or json.gz files in streaming manner with [Json Path](<https://github.com/jsurfer/JsonSurfer#what-is-jsonpath>) to extract which data to be imported
+Import multiple json or json.gz files in streaming manner using [Json Path](<https://github.com/jsurfer/JsonSurfer#what-is-jsonpath>) to extract which data to be imported
 
 Commands
 
 ```cli
-$ ./cli/bin/fdhutil mongo-import
--c, --collection  <arg>   collection to be imported, required
-
--d, --db  <arg>           database name, required
-    --dir  <arg>          Absolute path, required
-    --drop                drop collection if exist, default: false
-
--g, --gunzip              gunzip files in directory, if enable only json.gz files will be processed, default: false
--h, --host  <arg>         database host, default: localhost
--j, --json-path  <arg>    json path to extract, default: $
-
-    --password  <arg>     database password to be imported, required
--p, --port  <arg>         database host, default: 27017
--u, --username  <arg>     database username to be imported, required
--v, --verbose             verbose logging, default: false
-    --help                Show help message
+$> ./cli/bin/fdhutil mongo-import
+    -c, --collection  <arg>   collection to use, required
+    -d, --db  <arg>           database to use, required
+        --dir  <arg>          Absolute path, required
+        --drop                drop collection before inserting documents, default: false
+    -g, --gunzip              only json.gz file is processed, default: false
+    -h, --host  <arg>         mongodb host to connect to, default: localhost
+    -j, --json-path  <arg>    json path to data to be imported, default: $
+        --password  <arg>     password for authentication, required
+    -p, --port  <arg>         server port, default: 27017
+    -u, --username  <arg>     username for authentication, required
+    -v, --verbose             more detailed log output, default: false
+        --help                Show help message
 ```
 
 Example
