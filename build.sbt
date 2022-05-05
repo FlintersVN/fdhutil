@@ -16,7 +16,6 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "core",
-    version := appVersion,
 
     scalaVersion := scalaV,
     libraryDependencies ++= Seq(Deps.scallop, Deps.airframeLog)
@@ -31,7 +30,6 @@ lazy val cli = project
   .in(file("cli"))
   .settings(
     name := "cli",
-    version := appVersion,
     packMain := Map("fdhutil" -> "io.myutilities.cli.Main"),
     scalaVersion := scalaV,
     fork := true
@@ -46,7 +44,6 @@ lazy val mongoimport = project
   .in(file("mongo-import"))
   .settings(
     name := "mongo-import",
-    version := appVersion,
     scalaVersion := scalaV,
     libraryDependencies ++= Seq(
       Deps.akkaJsonStream,
