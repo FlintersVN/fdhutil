@@ -40,6 +40,7 @@ final case class Opt(
   collection: String,
   username: String,
   password: String,
+  authSource: String,
   drop: Boolean,
   gunzip: Boolean,
   jsonPath: String,
@@ -59,6 +60,7 @@ object MongoImport extends Program("mongo-import") {
   val collection = opt[String](required = true, descr = "collection to use, required")
   val username = opt[String](required = true, descr = "username for authentication, required")
   val password = opt[String](required = true, descr = "password for authentication, required")
+  val authSource = opt[String]("auth-source", default = Some("admin"), descr = "auth source for authentication, default: admin")
   val drop = opt[Boolean](default = Some(false),descr = "drop collection before inserting documents, default: false")
   val gunzip = opt[Boolean](default = Some(false), descr = "only json.gz file is processed, default: false")
   val jsonPath = opt[String]("json-path", default = Some("$"), descr = "json path to data to be imported, default: $")
@@ -71,12 +73,17 @@ object MongoImport extends Program("mongo-import") {
     Either.cond(d.isAbsolute(), (), "<dir> must be absolute")
   }
 
+  validate(authSource) { x =>
+    Either.cond(!x.isEmpty, (), "<auth-source> must not be empty")
+  }
+
 
   def config: Config = Opt(
     db = db(),
     host = host(),
     port = port(),
     collection = collection(),
+    authSource = authSource(),
     drop = drop(),
     directory = dir(),
     username = username(),
@@ -128,8 +135,9 @@ object MongoImport extends Program("mongo-import") {
 
   def load(config: Config, bsonSrc: Source[BSONDocument, _]) = {
     val driver = new reactivemongo.api.AsyncDriver
+    val authSrouce = config.authSource
     val futureCollection = driver
-      .connect(s"mongodb://${config.username}:${config.password}@${config.host}:${config.port}/?readPreference=primary&ssl=false&authSource=${config.db}")
+      .connect(s"mongodb://${config.username}:${config.password}@${config.host}:${config.port}/?readPreference=primary&ssl=false&authSource=${authSrouce}")
       .flatMap(_.database(config.db))
       .map(_.collection(config.collection))
     futureCollection
