@@ -7,7 +7,7 @@ Prerequisite java 8+
 ```cli
 $> curl -sL https://github.com/FlintersVN/fdhutil/releases/download/v0.0.3/cli-0.0.3.zip -o cli.zip
 $> unzip cli.zip
-$> mv cli-0.0.1 cli
+$> mv cli-0.0.3 cli
 $> ./cli/bin/fdhutil --help
 ```
 
